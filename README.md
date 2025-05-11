@@ -5,7 +5,7 @@ This project is a reimplementation of the paper:
 **DND: Deep Learning-Based Directed Network Disintegrator**, IEEE JETCAS, 2023.
 
 
-##  ? My schedule
+##  ðŸš€ My schedule
 
 *read and understand the paper*   
 - [x] prepare the data
@@ -25,13 +25,13 @@ This project is a reimplementation of the paper:
 
 
 
-## ? Structure
-- `model/` ¡ª GAT + MLP model
-- `scripts/` ¡ª Training and evaluation scripts
-- `data/` ¡ª Synthetic and real-world directed networks
-- `results/` ¡ª Logs, plots, metrics
+## ðŸ“Œ Structure
+- `model/` â€” GAT + MLP model
+- `scripts/` â€” Training and evaluation scripts
+- `data/` â€” Synthetic and real-world directed networks
+- `results/` â€” Logs, plots, metrics
 
-## ? Dependencies
+## ðŸ”§ Dependencies
 
 ```bash
 pip install -r requirements.txt
