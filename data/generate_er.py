@@ -22,7 +22,7 @@ total = 0
 for p in edge_probs:
     for i in range(graphs_per_prob):
         g = generate_er_graph(node_count, p)
-        filename = f"ER_n{node_count}_p{p:.2f}_id{i}.graphml"
+        filename = f"ER_n{node_count}_p{p:.2f}_id{i}.gml"
         save_graph(g, os.path.join(output_dir, filename))
         total += 1
 

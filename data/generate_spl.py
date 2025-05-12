@@ -31,7 +31,7 @@ for i in range(num_graphs):
 
     g = generate_spl_graph(node_count, m, exp_out, exp_in)
 
-    filename = f"SPL_n{node_count}_m{m}_ein{exp_in}_eout{exp_out}_id{i}.graphml"
+    filename = f"SPL_n{node_count}_m{m}_ein{exp_in}_eout{exp_out}_id{i}.gml"
     save_graph(g, os.path.join(output_dir, filename))
 
 print(f"✅ 生成完毕：共 {num_graphs} 个 SPL 图，存储于 {output_dir}")
