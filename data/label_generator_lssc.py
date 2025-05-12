@@ -74,11 +74,11 @@ def compute_node_labels_strict(graph: Graph, threshold=0.1):
             min_k = k
             break
 
-    print(f"\n✅ 找到最优解数量: {len(optimal_sets)}, 最小移除节点数: {min_k}")
-    print(f"🌟 最优解展示: {optimal_sets[:]}")
+    # print(f"\n✅ 找到最优解数量: {len(optimal_sets)}, 最小移除节点数: {min_k}")
+    # print(f"🌟 最优解展示: {optimal_sets[:]}")
 
-    for idx, opt in enumerate(optimal_sets[:]):
-        draw_subgraph_with_deleted_nodes(graph, delete_nodes=list(opt), title=f"optim#{idx+1}_delete_{opt}")
+    # for idx, opt in enumerate(optimal_sets[:]):
+    #     draw_subgraph_with_deleted_nodes(graph, delete_nodes=list(opt), title=f"optim#{idx+1}_delete_{opt}")
 
     node_counts = defaultdict(int)
     for opt_set in optimal_sets:
@@ -115,6 +115,24 @@ def test_label_generator_on_simple_graph():
         assert abs(l - e) < 1e-3, f"标签不匹配: got {l}, expected {e}"
 
     print("✅ 测试通过：标签生成逻辑正确！")
+def label_graph_file(input_path, output_path, threshold=0.1):
+    g = Graph.Read_GraphML(input_path)
+    labels = compute_node_labels_strict(g, threshold)
+    g.vs["label"] = labels
+    g.write_graphml(output_path)
+def label_directory(input_dir, output_dir, threshold=0.1):
+    os.makedirs(output_dir, exist_ok=True)
+    for fname in os.listdir(input_dir):
+        if not fname.endswith(".gml"):
+            continue
+        in_path = os.path.join(input_dir, fname)
+        out_path = os.path.join(output_dir, fname)
+        print(f"✔ 处理: {fname}")
+        label_graph_file(in_path, out_path, threshold)
 
 if __name__ == "__main__":
-    test_label_generator_on_simple_graph()
+    # test_label_generator_on_simple_graph()
+    
+    input_dir = "./data/synthetic/ER/"
+    output_dir = "./data/synthetic/ER_labeled/"
+    label_directory(input_dir, output_dir, threshold=0.1)
