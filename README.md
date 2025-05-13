@@ -9,17 +9,17 @@ This project is a reimplementation of the paper:
 
 *read and understand the paper*   
 - [x] prepare the data
-- [ ] find out the input and output
-- [ ] draw the Algorithm flow chart
-- [ ] draw the model architecture details
-- [ ] define the loss function
+- [x] find out the input and output
+- [x] draw the Algorithm flow chart
+- [x] draw the model architecture details
+- [x] define the loss function
 - [ ] define the evaluation metrics
 
 *coding*
-- [ ] define the training and evaluation process
-- [ ] define the hyperparameters
-- [ ] process the data
-- [ ] train the model
+- [x] define the training and evaluation process
+- [x] define the hyperparameters
+- [x] process the data
+- [x] train the model
 - [ ] evaluate the model
 - [ ] visualize the results
 
