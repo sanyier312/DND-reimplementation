@@ -48,6 +48,6 @@ def test_dataloader():
         print("标签 y:", batch["y"].shape)
         print("标签 y:", batch["y"])
         print("边 edge_index:", batch["edge_index"].shape)
-        if i == 1: break  # 测试前两个图即可
+        
 if __name__ == "__main__":
     test_dataloader()
