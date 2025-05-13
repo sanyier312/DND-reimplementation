@@ -2,23 +2,14 @@ import os
 import itertools
 import numpy as np
 from igraph import Graph
+import igraph
 from collections import defaultdict
 import matplotlib.pyplot as plt
-import networkx as nx
+from multiprocessing import Pool
 
 # 设置字体为黑体解决中文乱码
 plt.rcParams['font.sans-serif'] = ['SimHei']
 
-def compute_relative_lscc(g: Graph, n) -> float:
-    if g.vcount() == 0:
-        return 0.0
-    sccs = g.connected_components(mode="STRONG")
-    if not sccs:
-        return 0.0
-    largest = max(len(comp) for comp in sccs)
-    if largest == 1:
-        return 0.0
-    return largest / n
 
 def draw_subgraph_with_deleted_nodes(original_g: Graph, delete_nodes, title=""):
     # 保留子图
@@ -27,34 +18,67 @@ def draw_subgraph_with_deleted_nodes(original_g: Graph, delete_nodes, title=""):
     sccs = g_sub.connected_components(mode="STRONG")
     largest_scc = max(sccs, key=len) if sccs else []
 
-    # 转换为 NetworkX
-    nx_g = nx.DiGraph()
-    nx_g.add_edges_from(g_sub.get_edgelist())
-
-    pos = nx.spring_layout(nx_g, seed=42)
-    node_colors = []
-    for v in nx_g.nodes():
+    # 设置节点颜色
+    colors = []
+    for v in range(g_sub.vcount()):
         if v in largest_scc:
-            node_colors.append("lightgreen")  # LSCC
+            colors.append("lightgreen")
         else:
-            node_colors.append("lightblue")
+            colors.append("lightblue")
+    g_sub.vs["color"] = colors
 
-    plt.figure(figsize=(5, 4))
-    nx.draw_networkx_nodes(nx_g, pos, node_color=node_colors, node_size=600)
-    nx.draw_networkx_edges(nx_g, pos, arrows=True, arrowstyle='->')
-    nx.draw_networkx_labels(nx_g, pos)
+    # 可选：设置标签为原始索引（因为 subgraph 会改变索引）
+    original_labels = [to_keep[i] for i in range(g_sub.vcount())]
+    g_sub.vs["label"] = list(map(str, original_labels))
 
-    # 画被删节点（灰红色虚节点）
-    deleted_pos = {i: (0, 1.2 + 0.1 * idx) for idx, i in enumerate(delete_nodes)}
-    nx.draw_networkx_nodes(nx_g, deleted_pos, nodelist=delete_nodes,
-                           node_color='salmon', node_size=600, alpha=0.5)
-    nx.draw_networkx_labels(nx_g, deleted_pos, labels={i: str(i) for i in delete_nodes})
+    layout = g_sub.layout("fr")  # Force-directed layout
 
-    plt.title(title)
-    plt.axis('off')
-    plt.tight_layout()
-    plt.savefig(f"subgraph_{title}.png", dpi=300)
+    # 绘图设置
+    visual_style = {
+        "vertex_size": 30,
+        "vertex_label_size": 12,
+        "layout": layout,
+        "bbox": (500, 400),
+        "margin": 30,
+        "edge_arrow_size": 0.6,
+    }
 
+    # 保存图像
+    igraph.plot(g_sub, f"subgraph_{title}.png", **visual_style)
+
+    # 显示额外信息：被删节点
+    if delete_nodes:
+        print(f"Deleted nodes (not shown in graph): {delete_nodes}")
+
+
+
+
+# 更高效的 LSCC 相对大小计算函数
+def compute_relative_lscc(g: Graph, n: int) -> float:
+    if g.vcount() <= 1:
+        return 0.0
+    sccs = g.connected_components(mode="STRONG")
+    if not sccs:
+        return 0.0
+    largest = max(map(len, sccs))
+    return 0.0 if largest <= 1 else largest / n
+
+# 单个组合评估函数（用于并行处理）
+def evaluate_combination(args):
+    graph, comb, n, threshold = args
+    to_keep = [i for i in range(graph.vcount()) if i not in comb]
+    g_sub = graph.subgraph(to_keep)
+
+    # 快速剪枝：如果子图大小已经小于阈值，直接判定可行
+    if g_sub.vcount() < threshold * n:
+        return set(comb)
+    
+    rel = compute_relative_lscc(g_sub, n)
+    if rel <= threshold:
+        return set(comb)
+    return None
+
+# （并行 + 优化）
 def compute_node_labels_strict(graph: Graph, threshold=0.1):
     n = graph.vcount()
     all_indices = list(range(n))
@@ -62,39 +86,42 @@ def compute_node_labels_strict(graph: Graph, threshold=0.1):
     min_k = None
 
     for k in range(1, n + 1):
-        current_valid_sets = []
-        for comb in itertools.combinations(all_indices, k):
-            to_keep = [i for i in range(n) if i not in comb]
-            g_copy = graph.subgraph(to_keep)
+        print(f"🔍 正在评估 k = {k} 的组合...")
+        combs = list(itertools.combinations(all_indices, k))
+        args = [(graph, comb, n, threshold) for comb in combs]
 
-            if compute_relative_lscc(g_copy, n) <= threshold:
-                current_valid_sets.append(set(comb))
+        with Pool(processes=8) as pool:  # 你可以根据机器调整进程数
+            results = pool.map(evaluate_combination, args)
+
+        current_valid_sets = [r for r in results if r]
         if current_valid_sets:
             optimal_sets = current_valid_sets
             min_k = k
             break
 
-    # print(f"\n✅ 找到最优解数量: {len(optimal_sets)}, 最小移除节点数: {min_k}")
-    # print(f"🌟 最优解展示: {optimal_sets[:]}")
+    print(f"\n✅ 找到最优解数量: {len(optimal_sets)}, 最小移除节点数: {min_k}")
+    print(f"🌟 最优解展示: {optimal_sets[:]}")
 
-    # for idx, opt in enumerate(optimal_sets[:]):
-    #     draw_subgraph_with_deleted_nodes(graph, delete_nodes=list(opt), title=f"optim#{idx+1}_delete_{opt}")
-
+    # 节点频率统计
     node_counts = defaultdict(int)
     for opt_set in optimal_sets:
         for node in opt_set:
             node_counts[node] += 1
 
+    # 标签计算
     labels = []
+    total = len(optimal_sets)
     for i in range(n):
-        if node_counts[i] == len(optimal_sets):
+        if node_counts[i] == total:
             labels.append(1.0)
         elif node_counts[i] > 0:
-            labels.append(round(node_counts[i] / len(optimal_sets), 4))
+            labels.append(round(node_counts[i] / total, 4))
         else:
             labels.append(0.0)
 
     return labels
+
+
 
 # ✅ 单元测试
 def test_label_generator_on_simple_graph():
