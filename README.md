@@ -20,7 +20,7 @@ and the model predicts a value $\hat{y}_i \in [0, 1]$.
 
 The Mean Squared Error loss is defined as:
 
-$\mathcal{L}_{\text{MSE}} = \frac{1}{|V|} \sum_{i=1}^{|V|} (y_i - \hat{y}_i)^2$
+$$\mathcal{L}_{\text{MSE}} = \frac{1}{|V|} \sum_{i=1}^{|V|} (y_i - \hat{y}_i)^2$$
 
 
 - [ ] define the evaluation metrics
