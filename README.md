@@ -36,5 +36,9 @@ This project is a reimplementation of the paper:
 ```bash
 pip install -r requirements.txt
 ```
+# 📈 Results
 
+*train the model with  ER dataset*
+
+![](er_train.jpg)
 
