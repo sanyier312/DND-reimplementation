@@ -15,14 +15,14 @@ This project is a reimplementation of the paper:
   ![](20250514213026.png)
 - [x] define the loss function
   
-Given a graph $G = (V, E) $, each node $ v_i \in V $ has a ground truth label $ y_i \in [0, 1] $,  
-and the model predicts a value $ \hat{y}_i \in [0, 1] $.
+Given a graph $G = (V, E)$, each node $v_i \in V$ has a ground truth label $y_i \in [0, 1]$,  
+and the model predicts a value $\hat{y}_i \in [0, 1]$.
 
 The Mean Squared Error loss is defined as:
 
-$
+$$
 \mathcal{L}_{\text{MSE}} = \frac{1}{|V|} \sum_{i=1}^{|V|} (y_i - \hat{y}_i)^2
-$
+$$
 
 - [ ] define the evaluation metrics
 
