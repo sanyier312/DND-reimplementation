@@ -24,6 +24,7 @@ $$
 \mathcal{L}_{\text{MSE}} = \frac{1}{|V|} \sum_{i=1}^{|V|} (y_i - \hat{y}_i)^2
 $$
 
+
 - [ ] define the evaluation metrics
 
 *coding*
