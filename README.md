@@ -52,4 +52,9 @@ pip install -r requirements.txt
 
 ![](sbm_train.jpg)
 
+*train the model with  SPL dataset*
+
+![](20250516133108.png)
+
+
 
