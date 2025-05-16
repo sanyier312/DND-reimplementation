@@ -160,6 +160,6 @@ def label_directory(input_dir, output_dir, threshold=0.1):
 if __name__ == "__main__":
     # test_label_generator_on_simple_graph()
     
-    input_dir = "./data/synthetic/ER/"
-    output_dir = "./data/synthetic/ER_labeled/"
+    input_dir = "./data/synthetic/SPL/"
+    output_dir = "./data/synthetic/SPL_labeled/"
     label_directory(input_dir, output_dir, threshold=0.1)
