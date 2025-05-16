@@ -1,6 +1,5 @@
 # DND Reimplementation
 
-
 ## 🚀 My schedule
 
 *read and understand the paper*
@@ -48,3 +47,9 @@ pip install -r requirements.txt
 *train the model with  ER dataset*
 
 ![](er_train.jpg)
+
+*train the model with  SBM dataset*
+
+![](sbm_train.jpg)
+
+
