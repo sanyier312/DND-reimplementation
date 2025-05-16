@@ -89,4 +89,4 @@ def train_model(
     wandb.finish()
 
 if __name__ == "__main__":
-    train_model("./data/synthetic/ER_with_features/")
+    train_model("./data/synthetic/SBM_with_features/")
