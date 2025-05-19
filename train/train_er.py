@@ -17,7 +17,7 @@ def train_model(
     mlp_hidden_channels=16,
     mlp_layers=2,
     dropout=0.2,
-    model_save_path="best_model.pt"
+    model_save_path="best_model_er.pt"
 ):
     # 初始化 wandb
     wandb.init(project="graph-model-training", config={
@@ -89,4 +89,4 @@ def train_model(
     wandb.finish()
 
 if __name__ == "__main__":
-    train_model("./data/synthetic/SBM_with_features/")
+    train_model("./data/synthetic/ER_with_features/")

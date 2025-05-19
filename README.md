@@ -27,7 +27,7 @@ The Mean Squared Error loss is defined as:
 - [X] process the data
 - [X] train the model
 - [X] evaluate the model
-- [x] visualize the results
+- [X] visualize the results
 
 ## 📌 Structure
 
@@ -56,7 +56,9 @@ pip install -r requirements.txt
 
 ![](20250516133108.png)
 
-
-
 *evaluate the model with  ER dataset compared with baseline*
 ![](disintegration_time_comparison.png)
+
+
+*evaluate the model with  wiki-vote dataset compared with baseline*
+![](compare_wiki_vote.png)
