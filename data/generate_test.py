@@ -14,7 +14,7 @@ graphs_per_size = 10
 def save_graph(g, model, size, idx):
     model_dir = os.path.join(base_output_dir, model)
     os.makedirs(model_dir, exist_ok=True)
-    filename = f"{model}_n{size}_id{idx}.graphml"
+    filename = f"{model}_n{size}_id{idx}.gml"
     g.write_graphml(os.path.join(model_dir, filename))
 
 

@@ -32,7 +32,7 @@ for i in range(num_graphs):
 
     g = generate_sbm_graph(block_sizes, probs)
 
-    filename = f"SBM_n{node_count}_b{num_blocks}_id{i}.graphml"
+    filename = f"SBM_n{node_count}_b{num_blocks}_id{i}.gml"
     save_graph(g, os.path.join(output_dir, filename))
 
 print(f"生成完毕：共 {num_graphs} 个 SBM 图，存储于 {output_dir}")
