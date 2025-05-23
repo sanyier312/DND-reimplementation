@@ -57,8 +57,30 @@ pip install -r requirements.txt
 ![](20250516133108.png)
 
 *evaluate the model with  ER dataset compared with baseline*
-![](disintegration_time_comparison.png)
+![](20250523100301.png)
+
+*evaluate the model with  SBM dataset compared with baseline*
+![](20250523100422.png)
+
+
+*evaluate the model with  SPL dataset compared with baseline*
+![](20250523100513.png)
 
 
 *evaluate the model with  wiki-vote dataset compared with baseline*
-![](compare_wiki_vote.png)
+![](20250523101350.png)
+
+*evaluate the model with  p2p dataset compared with baseline*
+![](20250523100853.png)
+
+*evaluate the model with  cit-HepTh dataset compared with baseline*
+![](20250523101302.png)
+
+*evaluate the model with  cfinder-google dataset compared with baseline*
+![](20250523101054.png)
+
+*evaluate the model with  subelj-cora dataset compared with baseline*
+![](20250523101130.png)
+
+*evaluate the model with  cit-HepTh dataset compared with baseline*
+![](20250523100936.png)
